@@ -13,6 +13,6 @@ userStore.updateName('李四')
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 
 </style>

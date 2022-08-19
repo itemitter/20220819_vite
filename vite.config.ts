@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import * as path from 'path'
+import {
+  createStyleImportPlugin,
+  ElementPlusResolve,
+} from 'vite-plugin-style-import'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +14,25 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    createStyleImportPlugin({
+      resolves: [
+        ElementPlusResolve()
+      ],
+      libs: [
+        // 如果没有你需要的resolve, 可以在lib内直接写， 也可以给我们提供pr
+        {
+          libraryName: 'element-plus',
+          esModule: true,
+          resolveStyle: (name) => {
+            return `element-plus/lib/theme-chalk/${name}.css`
+          },
+          ensureStyleFile: true // 忽略文件时候存在， 导入不存在的css文件时防止错误
+        }
+      ]
+    })
+  ],
   server: {
     port: 8000, // 启动端口
     hmr: {
